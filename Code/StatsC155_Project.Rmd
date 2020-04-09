@@ -1,0 +1,40 @@
+---
+title: "StatsC155_Project"
+author: "Gabriel Fanucchi"
+date: "3/21/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(survey)
+mydata <- read.csv("C155ProjectData.csv")
+
+mydesign <- svydesign(ids = ~Cluster,data = mydata,fpc = ~Fpc)
+summary(mydesign)
+
+```
+
+
+## Esimate of the proportion
+```{r}
+prop_est <- svymean(~prop, mydesign)
+prop_est
+```
+
+
+
+## Confidence Interval estimate
+```{r}
+temp <- svymean(~prop,design = mydesign)
+confint(temp) 
+```
+
+
+
+```{r}
+boxplot(mydata$prop, main = "Confidence Interval")
+```
